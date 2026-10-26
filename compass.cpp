@@ -4,10 +4,10 @@
 static QMC5883LCompass compass;
 void initCompass() {
   compass.init();
-  Serial.println("Компас инициализирован");
-
 }
-void initCompass(int &varx, int &vary, int &varz) {
+void readCompass(int &x, int &y, int &z) {
   compass.read();
-
-}
+  x = compass.getX();
+  y = compass.getY();
+  z = compass.getZ();
+  }
