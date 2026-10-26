@@ -1,9 +1,9 @@
-void setup() {
-  // put your setup code here, to run once:
+#ifndef GPS_H
+#define GPS_H
 
-}
+#include <Arduino.h>
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void initGps();
+void readGps(float &lat, float &lng, float &alt, int &sat);
 
-}
+#endif
