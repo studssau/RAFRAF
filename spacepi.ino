@@ -31,7 +31,16 @@ void loop() {
   Serial.print(sat);
   Serial.println();
 
-  e220ttl.sendMessage("Название команды," + String(x) + "," + String(y) + "," + String(z) + "," + String(lat) + "," + String(lng) + "," + String(alt) + "," + String(sat) + "\n\r");
+  e220ttl.sendMessage("Название команды," + String(x) + "," + 
+	String(y) + "," + String(z) + "," + String(lat) + "," + 
+	String(lng) + "," + String(alt) + "," + String(sat) + "\n\r");
+  if (e220ttl.available() > 1) { //Ждем больше одного байта
+    
+    ResponseContainer response = e220ttl.receiveMessage(); //Получение сообщения с радиомодуля
+    
+    String Message = response.data; //Запись в переменную Message типа String (строка)
+
+  }
 
   delay(1000);
 }
