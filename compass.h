@@ -2,6 +2,6 @@
 #define COMPASS_H
 
 void initCompass(); // для инициализации магнитомтра
-void readCompass(int &varx, int &vary, int &varz); // для чтения показаний
+void readCompass(int &x, int &y, int &z); // для чтения показаний
 
 #endif
