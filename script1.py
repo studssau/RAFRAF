@@ -1,16 +1,17 @@
 
-import serial
-import numpy as np
-import adi
-import pyqtgraph as pg
-CENTER_FREQ = 145_500_000
+import serial 
+import numpy as np 
+import adi 
+import pyqtgraph as pg 
+
+CENTER_FREQ = 915_000_000
 SAMPLE_RATE = 10_000_000
-BUF_SIZE = 65536
+BUF_SIZE = 65536 
 
-F_MIN = 140.5
-F_MAX = 150.5
+F_MIN = 910
+F_MAX = 920
 
-COM_PORT = "COM6"
+COM_PORT = "COM6" 
 COM_BAUD = 9600
 
 sdr = adi.Pluto("usb:")
@@ -18,27 +19,27 @@ sdr.sample_rate = SAMPLE_RATE
 sdr.rx_lo = CENTER_FREQ
 sdr.rx_buffer_size = BUF_SIZE
 
-ser = serial.Serial(COM_PORT, COM_BAUD, timeout=0)
+ser = serial.Serial(COM_PORT, COM_BAUD, timeout=0) 
 
-x = 0
-y = 0
-z = 0
-lat = 0
-lon = 0
+x = y = z = sat = 0 
+lat = lng = alt = 0.0  
+
 def parse(line):
-    global x, y, z, lat, lon
-    parts = line.split(",")
-    if len(parts) >= 5:
+    global x, y, z, sat, lat, lng, alt
+    parts = line.split(",") 
+    if len(parts) >= 7:
         x = int(parts[0])
-        y = int(parts[0])
-        z = int(parts[0])
-        lat = float(parts[1])
-        lon = float(parts[1])
+        y = int(parts[1])
+        z = int(parts[2])
+        lat = float(parts[3])
+        lng = float(parts[4])
+        alt = float(parts[5])
+        sat = int(parts[6])
 
 app = pg.mkQApp()
-win = pg.GraphicsLayoutWidget(show=True)
+win = pg.GraphicsLayoutWidget(show=True) 
 
-plot = win.addPlot()
+plot = win.addPlot() 
 plot.setXRange(F_MIN, F_MAX, padding=0)
 curve = plot.plot()
 
@@ -52,6 +53,6 @@ while True:
     while ser.in_waiting:
         parse(ser.readline().decode("ascii", errors="ignore").strip())
 
-    label.setText(f"x: {x}y: {y}z: {z}lat: {lat}lon: {lon}")
+    label.setText(f"x: {x}<br> y: {y}<br> z: {z}<br> sat: {sat}<br> lat: {lat}<br> lng: {lng}<br> alt: {alt}")
 
     pg.QtWidgets.QApplication.processEvents()
