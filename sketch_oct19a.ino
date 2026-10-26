@@ -10,17 +10,28 @@ void setup() {
 }
 
 void loop() {
-  int CENTER_FREQ, SAMPLE_RATE, BUF_SIZE; // Переменные для хранения данных компаса типа int (целое число)
-  float F_MIN, F_MAX; // Переменные для хранения данных GPS типа float (число с плавающей точкой)
-  readCompass (CENTER_FREQ, SAMPLE_RATE, BUF_SIZE) ; // Имя функции и аргументы необходимо согласовать с ответственными за написание библиотеки компаса
-  readGps(F_MIN, F_MAX); // Имя функции и аргументы необходимо согласовать с ответственными за написание библиотеки GPS
-  Serial.print(CENTER_FREQ); //Вывод значения переменной x
+  int x, y, z, sat;
+  float lat, lng, alt;
+
+  readCompass(x, y, z); 
+  readGps(lat, lng, alt, sat);
+
+  Serial.print(x);
   Serial.print(",");
-  Serial.print(SAMPLE_RATE); //Вывод значения переменной y
+  Serial.print(y); 
   Serial.print(",");
-  Serial.print(BUF_SIZE); //Вывод значения переменной z
+  Serial.print(z);
+  Serial.print(",");
+  Serial.print(lat); 
+  Serial.print(",");
+  Serial.print(lng);
+  Serial.print(",");
+  Serial.print(alt); 
+  Serial.print(",");
+  Serial.print(sat);
   Serial.println();
-  Serial.print("Переменная");
-  delay(1000); // Задержка 1000 милисекунд (можно поставить другую)
-  e220ttl.sendMessage("Переменная");
+
+  e220ttl.sendMessage("Название команды," + String(x) + "," + String(y) + "," + String(z) + "," + String(lat) + "," + String(lng) + "," + String(alt) + "," + String(sat) + "\n\r");
+
+  delay(1000);
 }
